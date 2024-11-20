@@ -83,4 +83,10 @@ return function (RouteBuilder $routes): void {
         $builder->connect('login', ['plugin' => null, 'controller' => 'Users', 'action' => 'login']);
         $builder->connect('logout', ['plugin' => null, 'controller' => 'Users', 'action' => 'logout']);
     });*/
+
+    $routes->scope('/', function (\Cake\Routing\RouteBuilder $routes) {
+        $routes->connect('/packages', ['controller' => 'Packages', 'action' => 'index']);
+        $routes->connect('/packages/view/*', ['controller' => 'Packages', 'action' => 'view']);
+        $routes->connect('/packages/add', ['controller' => 'Packages', 'action' => 'add']);
+    });
 };

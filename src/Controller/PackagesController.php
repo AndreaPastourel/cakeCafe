@@ -17,6 +17,8 @@ class PackagesController extends AppController
     parent::initialize();
     $this->Reservations = $this->fetchTable('Reservations');
     $this->loadComponent('Authentication.Authentication');
+    $this->Authentication->allowUnauthenticated(['index', 'view']);
+
 }
     public ReservationsTable $Reservations;
     /**

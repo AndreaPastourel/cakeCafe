@@ -32,27 +32,41 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+   <?php $this->loadHelper('Authentication.Identity');?>
 </head>
 <body>
     <nav class="top-nav">
         <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
+            <a href="<?= $this->Url->build('/') ?>"><span>Arras </span>Games</a>
         </div>
         <div class="top-nav-links">
-            <!-- Lien vers les différentes pages CRUD -->
-            <a href="<?= $this->Url->build(['controller' => 'Packages', 'action' => 'index','plugin'=>null]) ?>">Forfaits</a>
-            <a href="<?= $this->Url->build(['controller' => 'Reservations', 'action' => 'myReservations','plugin'=>null]) ?>">Mes Réservations</a>
-            <a href="<?= $this->Url->build(['controller' => 'Games', 'action' => 'index','plugin'=>null]) ?>">Jeux</a>
-            <a href="<?= $this->Url->build(['controller' => 'Machines', 'action' => 'index','plugin'=>null]) ?>">Machines</a>
-            <a href="<?= $this->Url->build(['controller' => 'Maintenances', 'action' => 'index','plugin'=>null]) ?>">Maintenances</a>
-
-            <!-- Vérifie si l'utilisateur est connecté -->
-            <?php if ($this->request->getAttribute('identity')): ?>
-                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>">Déconnexion</a>
+        <ul>
+        <?php if ($this->Identity->isLoggedIn()): ?>
+            <?php $user = $this->Identity->get('role'); ?>
+            
+            <!-- Utilisateur connecté -->
+            <?php if ($user === 'admin'): ?>
+                <li><?= $this->Html->link('Forfaits', ['controller' => 'Packages', 'action' => 'index','plugin' => null]); ?></li>
+                <li><?= $this->Html->link('Réservations', ['controller' => 'Reservations', 'action' => 'index','plugin' => null]); ?></li>
+                <li><?= $this->Html->link('Machines', ['controller' => 'Machines', 'action' => 'index','plugin' => null]); ?></li>
+                <li><?= $this->Html->link('Maintenance', ['controller' => 'Maintenance', 'action' => 'index']); ?></li>
+                <li><?= $this->Html->link('Mon compte', ['controller' => 'Users', 'action' => 'profil']); ?></li>
+                <li><?= $this->Html->link('Déconnexion', ['controller' => 'Users', 'action' => 'logout']); ?></li>
+            
             <?php else: ?>
-                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>">Connexion</a>
-                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'register']) ?>">Inscription</a>
+                <!-- Utilisateur non admin mais connecté -->
+                <li><?= $this->Html->link('Forfaits', ['controller' => 'Packages', 'action' => 'index','plugin' => null]); ?></li>
+                <li><?= $this->Html->link('Mes Réservations', ['controller' => 'Reservations', 'action' => 'myReservations','plugin' => null]); ?></li>
+                <li><?= $this->Html->link('Mon compte', ['controller' => 'Users', 'action' => 'profile']); ?></li>
+                <li><?= $this->Html->link('Déconnexion', ['controller' => 'Users', 'action' => 'logout']); ?></li>
             <?php endif; ?>
+        
+        <?php else: ?>
+            <!-- Utilisateur non connecté -->
+            <li><?= $this->Html->link('Forfaits', ['controller' => 'Packages', 'action' => 'index','plugin' => null]); ?></li>
+            <li><?= $this->Html->link('Connexion', ['controller' => 'Users', 'action' => 'login']); ?></li>
+        <?php endif; ?>
+    </ul>
         </div>
     </nav>
 
